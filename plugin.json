@@ -1,0 +1,15 @@
+{
+    "id": "dataiku-plugin-retrieval-reco",
+    "version": "0.1.0",
+    "meta": {
+        "label": "dataiku-plugin-deep2tower",
+        "description": "Plugin for product recommendation based on two-tower model architecture.",
+        "author": "ayoub.samaki",
+        "icon": "icon-rocket",
+        "tags": [
+            "Dataiku plugin"
+        ],
+        "url": "",
+        "licenseInfo": "Apache Software License"
+    }
+}

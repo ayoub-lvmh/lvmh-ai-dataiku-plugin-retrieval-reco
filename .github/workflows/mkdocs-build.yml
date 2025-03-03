@@ -1,0 +1,49 @@
+name: "Build and Deploy MkDocs to GitHub Pages"
+
+on:
+  workflow_run:
+    workflows: ["Run Semantic Release"]
+    types:
+      - completed
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success' }}
+    strategy:
+      matrix:
+        python-version: ["3.9"]
+        poetry-version: ["1.8.3"]
+    steps:
+      #----------------------------------------------
+      # Check-out repository
+      #----------------------------------------------
+      - name: Check out code
+        uses: actions/checkout@v4
+      #----------------------------------------------
+      # Setup Workflow
+      #----------------------------------------------
+      - name: Setup Workflow
+        uses: ./.github/actions/setup
+        with:
+          python-version: ${{ matrix.python-version }}
+          poetry-version: ${{ matrix.poetry-version }}
+          load-cache: true
+      #----------------------------------------------
+      # Configure Git credentials
+      #----------------------------------------------
+      - name: Configure Git credentials
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          echo "cache_id=$(date --utc '+%V')" >> $GITHUB_ENV
+      #----------------------------------------------
+      # Build and deploy MkDocs
+      #----------------------------------------------
+      - name: Build documentation and deploy
+        run: poetry run mkdocs gh-deploy --force

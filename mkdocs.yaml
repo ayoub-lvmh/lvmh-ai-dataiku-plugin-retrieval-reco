@@ -1,0 +1,88 @@
+site_name: LVMH deep2tower Dataiku plugin
+site_description: Documentation for LVMH deep2tower Dataiku plugin
+repo_name: lvmh-data/lvmh-ai-dataiku-plugin-retrieval-reco
+repo_url: https://github.com/lvmh-data/lvmh-ai-dataiku-plugin-retrieval-reco
+theme:
+  name: material
+  features:
+    - navigation.path
+    - navigation.tracking
+    - content.code.annotate
+  palette:
+    - scheme: default
+      media: "(prefers-color-scheme: light)"
+      primary: black
+      accent: black
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      media: "(prefers-color-scheme: dark)"
+      primary: black
+      accent: black
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  font:
+    text: Roboto
+    code: Roboto Mono
+
+markdown_extensions:
+  - abbr
+  - attr_list
+  - md_in_html
+  - pymdownx.superfences
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - admonition
+  - pymdownx.details
+  - def_list
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+plugins:
+  - search
+  - swagger-ui-tag
+  - mkdocstrings:
+      default_handler: python
+      handlers:
+        python:
+          options:
+            docstring_style: google
+            show_root_heading: true
+            show_root_toc_entry: true
+            show_root_full_path: true
+            show_category_heading: true
+            show_symbol_type_toc: true
+            show_symbol_type_heading: true
+            show_if_no_docstring: true
+            show_signature: true
+            signature_crossrefs: true
+            separate_signature: false
+            show_signature_annotations: true
+nav:
+  - Home: index.md
+  - Contributing:
+    - Installation: contributing/installation.md
+    - Tasks: contributing/tasks.md
+    - GitHub CI/CD: contributing/github-ci-cd.md
+    - Pre-commit: contributing/pre-commit.md
+    - Documentation: contributing/documentation.md
+  - References:
+    - Python-lib References: references/python-lib.md
+  - Coding Style: coding-style.md
+extra:
+  generator: true

@@ -1,0 +1,59 @@
+name: "Setup Python and Poetry Action"
+
+inputs:
+  python-version:
+    description: The version of Python to use
+    required: true
+    default: "3.9"
+    type: string
+  poetry-version:
+    description: The version of Poetry to use
+    required: true
+    default: "1.8.3"
+    type: string
+  poetry-args:
+    description: Additional arguments to pass to Poetry
+    required: false
+    default: ""
+    type: string
+  load-cache:
+    type: boolean
+    description: Load cached venv if exists
+    required: false
+    default: true
+
+runs:
+  using: "composite"
+  steps:
+      #----------------------------------------------
+      # Setup Python
+      #----------------------------------------------
+      - name: Set up Python ${{ inputs.python-version }}
+        id: setup-python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ inputs.python-version }}
+      #----------------------------------------------
+      # Install & configure Poetry
+      #----------------------------------------------
+      - name: Install Poetry
+        uses: abatilo/actions-poetry@v2.0.0
+        with:
+          poetry-version: ${{ inputs.poetry-version }}
+      #----------------------------------------------
+      # Load cached venv if exists
+      #----------------------------------------------
+      - name: Load cached venv
+        if: ${{ inputs.load-cache }}
+        id: cached-poetry-dependencies
+        uses: actions/cache@v3
+        with:
+          path: .venv
+          key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('**/poetry.lock') }}
+      #----------------------------------------------
+      # Install dependencies if cache does not exist
+      #----------------------------------------------
+      - name: Install dependencies
+        if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
+        run: poetry install ${{ inputs.poetry-args }}
+        shell: bash

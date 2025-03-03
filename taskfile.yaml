@@ -1,0 +1,31 @@
+version: '3'
+
+includes:
+  hooks:
+    taskfile: ./tasks/taskfile.hooks.yaml
+    dir: ./tasks
+  lock:
+    taskfile: ./tasks/taskfile.lock.yaml
+    dir: ./tasks
+  serve:
+    taskfile: ./tasks/taskfile.serve.yaml
+    dir: ./tasks
+
+tasks:
+  init:
+    desc: "Initialize the project"
+    cmds:
+      - poetry install
+      - poetry run pre-commit install
+  test:
+    desc: "Run the tests"
+    cmds:
+      - poetry run pytest
+  shell:
+    desc: "Run a shell inside the virtual environment"
+    cmds:
+      - poetry shell
+  python:
+    desc: "Run a python instance within poetry virtual environment"
+    cmds:
+      - poetry run ipython

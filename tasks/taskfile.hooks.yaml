@@ -1,0 +1,18 @@
+version: '3'
+
+tasks:
+  ruff-linter:
+    desc: "Run ruff linter"
+    dir: '{{.USER_WORKING_DIR}}'
+    cmds:
+      - poetry run ruff check --config pyproject.toml
+  ruff-formatter:
+    desc: "Run ruff formatter"
+    dir: '{{.USER_WORKING_DIR}}'
+    cmds:
+      - poetry run ruff format --config pyproject.toml
+  interrogate:
+    desc: "Run interrogate"
+    dir: '{{.USER_WORKING_DIR}}'
+    cmds:
+      - poetry run interrogate --config pyproject.toml

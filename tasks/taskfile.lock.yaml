@@ -1,0 +1,8 @@
+version: '3'
+
+tasks:
+  env:
+    desc: "Lock requirements for DSS 'code-env'"
+    dir: '{{.USER_WORKING_DIR}}'
+    cmds:
+      - poetry export --without-hashes -f requirements.txt -o code-env/python/spec/requirements.txt

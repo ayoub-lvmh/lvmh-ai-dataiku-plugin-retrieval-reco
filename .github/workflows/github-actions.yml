@@ -1,0 +1,48 @@
+name: "Run Ruff, Interrogate, and Pytest"
+
+on:
+  pull_request:
+    branches: [main, dev]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.9"]
+        poetry-version: ["1.8.3"]
+    steps:
+      #----------------------------------------------
+      # Check-out repository
+      #----------------------------------------------
+      - name: Check out code
+        uses: actions/checkout@v3
+      #----------------------------------------------
+      # Setup Workflow
+      #----------------------------------------------
+      - name: Setup Workflow
+        uses: ./.github/actions/setup
+        with:
+          python-version: ${{ matrix.python-version }}
+          poetry-version: ${{ matrix.poetry-version }}
+          load-cache: true
+      #----------------------------------------------
+      # Run Ruff linter
+      #----------------------------------------------
+      - name: Ruff linter
+        run: poetry run ruff check --no-fix --config pyproject.toml
+      #----------------------------------------------
+      # Run Ruff formatter
+      #----------------------------------------------
+      - name: Ruff format
+        run: poetry run ruff format --check --config pyproject.toml
+      #----------------------------------------------
+      # Run Interrogate
+      #----------------------------------------------
+      - name: Interrogate
+        run: poetry run interrogate --config pyproject.toml
+      #----------------------------------------------
+      # Run unit tests
+      #----------------------------------------------
+      - name: Run unit tests
+        run: poetry run pytest -v --disable-warnings

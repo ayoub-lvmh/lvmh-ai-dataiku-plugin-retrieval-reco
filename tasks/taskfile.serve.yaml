@@ -1,0 +1,8 @@
+version: '3'
+
+tasks:
+  docs:
+    desc: "Serve the documentation locally"
+    dir: '{{.USER_WORKING_DIR}}'
+    cmds:
+      - poetry run mkdocs serve -a 127.0.0.1:8080
